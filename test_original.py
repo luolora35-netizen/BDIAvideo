@@ -17,7 +17,6 @@ from diffusers import (
     AutoencoderKL,
     DDIMScheduler,
 )
-from video_diffusion.pipelines.BDIAScheduler import BDIAScheduler
 from diffusers.utils.import_utils import is_xformers_available
 from transformers import AutoTokenizer, CLIPTextModel
 from einops import rearrange
@@ -31,7 +30,6 @@ from video_diffusion.common.instantiate_from_config import instantiate_from_conf
 from video_diffusion.pipelines.p2p_validation_loop import P2pSampleLogger
 
 # logger = get_logger(__name__)
-
 
 
 def collate_fn(examples):
@@ -117,21 +115,9 @@ def test(
         ),
         disk_store=kwargs.get('disk_store', False)
     )
-
-    sched = DDIMScheduler.from_pretrained(pretrained_model_path, subfolder="scheduler")
-
-    print(type(sched))  # 期望：<class '...BDIAScheduler'>
-    print("is BDIAScheduler:", isinstance(sched, BDIAScheduler))  # True
-    print("is DDIMScheduler:", isinstance(sched, DDIMScheduler))  # True（继承关系）
-
     pipeline.scheduler.set_timesteps(editing_config['num_inference_steps'])
     pipeline.set_progress_bar_config(disable=True)
     pipeline.print_pipeline(logger)
-
-    print("scheduler type:", type(pipeline.scheduler).__name__)  # 应该是 BDIAScheduler
-    pipeline.scheduler.set_timesteps(50)
-    t0 = int(pipeline.scheduler.timesteps[0])
-    print("first t:", t0, "len(alpha):", len(pipeline.scheduler.alphas_cumprod))
 
     if is_xformers_available():
         try:

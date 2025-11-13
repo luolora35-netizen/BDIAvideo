@@ -98,7 +98,11 @@ class AttentionStore(AttentionControl):
         else:
             for key in self.attention_store:
                 for i in range(len(self.attention_store[key])):
-                    self.attention_store[key][i] += self.step_store[key][i]
+                    try:
+                        self.attention_store[key][i] += self.step_store[key][i]
+                    except:
+                        #import pdb; pdb.set_trace(
+                        continue
         
         if self.disk_store:
             path = self.store_dir + f'/{self.cur_step:03d}.pt'

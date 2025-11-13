@@ -104,7 +104,7 @@ class DDIMSpatioTemporalStableDiffusionPipeline(SpatioTemporalStableDiffusionPip
             all_latent.append(latent.to(dtype=weight_dtype))
         
         return all_latent
-    
+
     def next_clean2noise_step(self, model_output: Union[torch.FloatTensor, np.ndarray], timestep: int, sample: Union[torch.FloatTensor, np.ndarray]):
         """
         Assume the eta in DDIM=0

@@ -22,6 +22,7 @@ from diffusers.schedulers import (
     PNDMScheduler,
 )
 
+from video_diffusion.pipelines.BDIAScheduler import BDIAScheduler
 from ..models.unet_3d_condition import UNetPseudo3DConditionModel
 from .stable_diffusion import SpatioTemporalStableDiffusionPipeline
 from video_diffusion.prompt_attention import attention_util
@@ -35,7 +36,7 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         text_encoder: CLIPTextModel,
         tokenizer: CLIPTokenizer,
         unet: UNetPseudo3DConditionModel,
-        scheduler: Union[DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, DPMSolverMultistepScheduler,],
+        scheduler: Union[BDIAScheduler, DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, DPMSolverMultistepScheduler,],
         disk_store: bool=False
         ):
         super().__init__(vae, text_encoder, tokenizer, unet, scheduler)
